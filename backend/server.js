@@ -10,15 +10,59 @@ const PORT = process.env.PORT || 4000;
 // Middleware: lees JSON
 app.use(express.json());
 
-// Test route - reageer op GET /
-app.get('/', (req, res) => {
+
+
+  app.get('/api/workouts', (req, res) => {
   res.json({ 
-    message: 'Mijn eerste backend!',
-    success: true
+    message: 'Alle workouts',
+    data: []  // Later echte data
   });
 });
+
+// POST nieuwe workout
+app.post('/api/workouts', (req, res) => {
+  const { title, reps, load } = req.body;
+  
+  res.json({ 
+    message: 'Workout aangemaakt',
+    data: { title, reps, load }
+  });
+});
+
+
+// PATCH workout
+app.patch('/api/workouts/:id', (req, res) => {
+  const { id } = req.params;
+  
+  res.json({ 
+    message: `Workout ${id} aangepast`,
+    updates: req.body
+  });
+});
+
+// DELETE workout
+app.delete('/api/workouts/:id', (req, res) => {
+  const { id } = req.params;
+  
+  res.json({ 
+    message: `Workout ${id} verwijderd`
+  });
+});
+
+// GET één workout
+app.get('/api/workouts/:id', (req, res) => {
+  const { id } = req.params;
+  
+  res.json({ 
+    message: `Workout ${id}`,
+    id: id
+  });
+});
+
+
 
 // Start de server
 app.listen(PORT, () => {
   console.log(`Server draait op http://localhost:${PORT}`);
+
 });
